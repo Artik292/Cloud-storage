@@ -14,12 +14,11 @@ use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 $app = new \atk4\ui\App('My Filestore Demo');
 $app->initLayout('Centered');
 
-//$form = $app->add('Form');
-//$field = $form->addField('file', ['MyUpload', ['accept' => ['.png', '.jpg']]]);
+$form = $app->add('Form');
+$field = $form->addField('file', ['MyUpload', ['accept' => ['.png', '.jpg']]]);
 
 $app->add(['CRUD'])->setModel(new File($db));
 
-/*
 $field->onUpload(function ($id) use ($blobClient) {
 
 
@@ -115,5 +114,3 @@ $form->onSubmit(function ($form) use($db) {
 
     return new \atk4\ui\jsExpression('document.location="index.php"');
 });
-
-*/
