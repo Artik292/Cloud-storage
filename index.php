@@ -1,5 +1,6 @@
 <?php
-
+echo "Work";
+/*
 require 'connection.php';
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
@@ -8,7 +9,7 @@ use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
-/*
+
 $app = new \atk4\ui\App('My Filestore Demo');
 $app->initLayout('Centered');
 
