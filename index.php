@@ -11,13 +11,18 @@ use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
 
-$app = new \atk4\ui\App('My Filestore Demo');
+$app = new \atk4\ui\App('My Filestore Demo alfa(0.0.1)');
 $app->initLayout('Centered');
+
+$app->add(['Label','Images only!','massive red']);
+$app->add(['ui'=>'hidden divider']);
 
 $form = $app->add('Form');
 $field = $form->addField('file', ['MyUpload', ['accept' => ['.png', '.jpg']]]);
 
-$app->add(['CRUD'])->setModel(new File($db));
+$grid = $app->add(['Grid']);
+$grid->setModel(new File($db));
+$grid->addDecorator('MetaName', new \atk4\ui\TableColumn\Link('re.php?mn={$id}'));
 
 $field->onUpload(function ($id) use ($blobClient) {
 
@@ -111,6 +116,6 @@ $form->onSubmit(function ($form) use($db) {
     $file['MetaSize'] = $_SESSION['size_file'];
     $file['MetaIsImage'] = TRUE; ///////////FIIIIIIX IIIIIIITTTTT!!!!!!
     $file->save();
-
+    session_unset();
     return new \atk4\ui\jsExpression('document.location="index.php"');
 });
