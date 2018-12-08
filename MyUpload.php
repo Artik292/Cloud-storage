@@ -12,6 +12,7 @@ class MyUpload extends Upload
 {
     parent::init();
 }
+/*
   public function onDelete($fx = null)
      {
          if (is_callable($fx)) {
@@ -59,5 +60,5 @@ class MyUpload extends Upload
             }
         }
     }
-
+    */
 }
