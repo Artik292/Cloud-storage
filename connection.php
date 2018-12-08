@@ -2,8 +2,8 @@
 session_start();
 
 require 'vendor/autoload.php';
-/*
 require 'random_string.php';
+/*
 require 'myupload.php';
 
 
