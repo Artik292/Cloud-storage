@@ -6,7 +6,6 @@ namespace atk4\ui\FormField;
  *
  */
 
- /*
 class MyUpload extends Upload
 {
 
@@ -62,5 +61,4 @@ class MyUpload extends Upload
             }
         }
     }
-    */
 }
