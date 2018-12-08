@@ -1,8 +1,9 @@
 <?php
-echo "Work";
-/*
+
+
 require 'connection.php';
 
+/*
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
