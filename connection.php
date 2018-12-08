@@ -3,8 +3,8 @@ session_start();
 
 require 'vendor/autoload.php';
 require 'random_string.php';
-require 'myupload.php';
-/*
+//require 'myupload.php';
+
 
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
@@ -34,4 +34,3 @@ function init() {
   $this->addField('MetaIsImage',['type'=>'boolean','caption'=>'Meta file is image']);
 }
 }
-*/
