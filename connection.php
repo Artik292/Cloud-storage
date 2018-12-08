@@ -2,7 +2,7 @@
 
 require 'vendor/autoload.php';
 require 'random_string.php';
-require 'MyUpload.php';
+require 'myupload.php';
 
 session_start();
 
