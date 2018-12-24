@@ -20,7 +20,11 @@ $app->add(['ui'=>'hidden divider']);
 $form = $app->add('Form');
 $field = $form->addField('file', ['MyUpload', ['accept' => ['.png', '.jpg']]]);
 
-$grid = $app->add(['Grid']);
+if (@$_SESSION['admin']) {
+  $grid = $app->add(['CRUD']);
+} else {
+  $grid = $app->add(['Grid']);
+}
 $grid->setModel(new File($db));
 $grid->addDecorator('MetaName', new \atk4\ui\TableColumn\Link('re.php?mn={$id}'));
 
@@ -107,14 +111,20 @@ $field->onDelete(function ($fileId) use ($blobClient){
 });
 
 
-$form->onSubmit(function ($form) use($db) {
+$form->onSubmit(function ($form) use($db,$image_types) {
 
     $file = new File($db);
     $file['ContainerName'] = $_SESSION["containerName"];
     $file['MetaName'] = $_SESSION['name_file'];
     $file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
     $file['MetaSize'] = $_SESSION['size_file'];
-    $file['MetaIsImage'] = TRUE; ///////////FIIIIIIX IIIIIIITTTTT!!!!!!
+
+    if (in_array($file['MetaType'],$image_types)) {
+        $file['MetaIsImage'] = TRUE;
+    } else {
+        $file['MetaIsImage'] = FALSE;
+    }
+
     $file->save();
     session_unset();
     return new \atk4\ui\jsExpression('document.location="index.php"');

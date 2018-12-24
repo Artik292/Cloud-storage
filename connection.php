@@ -34,3 +34,11 @@ function init() {
   $this->addField('MetaIsImage',['type'=>'boolean','caption'=>'Meta file is image']);
 }
 }
+
+$image_types = array(
+  'jpg',
+  'jpeg',
+  'png',
+  'gif',
+  'bmp'
+);
