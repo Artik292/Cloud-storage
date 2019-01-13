@@ -3,6 +3,7 @@
 
 require 'connection.php';
 
+//require 'mycrud.php';
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
@@ -11,7 +12,7 @@ use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
 
-$app = new \atk4\ui\App('My Filestore Demo alfa(0.0.1)');
+$app = new \atk4\ui\App('My Filestore Demo alfa(0.0.2)');
 $app->initLayout('Centered');
 
 $app->add(['Label','Images only!','massive red']);
@@ -25,7 +26,35 @@ if (@$_SESSION['admin']) {
 } else {
   $grid = $app->add(['Grid']);
 }
-$grid->setModel(new File($db));
+
+$model = new File($db);
+$model->addHook('beforeDelete', function($model) use ($blobClient) {
+    //$_SESSION['model_id'] = $model->id;
+    $id = $model->id;
+    $model->load($id);
+
+    try{
+          // Delete container.
+          $blobClient->deleteContainer($model["ContainerName"]);
+      }
+      catch(ServiceException $e){
+          // Handle exception based on error codes and messages.
+          // Error codes and messages are here:
+          // http://msdn.microsoft.com/library/azure/dd179439.aspx
+          $code = $e->getCode();
+          $error_message = $e->getMessage();
+          new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
+      }
+
+
+      return new atk4\ui\jsNotify(['content' => $model['MetaName'].' has been removed!', 'color' => 'green']);
+
+    //throw new \atk4\data\ValidationException(['name'=>"We don't serve like you"]);
+    //new \atk4\ui\jsExpression('document.location="test.php"');
+}
+);
+
+$grid->setModel($model);
 $grid->addDecorator('MetaName', new \atk4\ui\TableColumn\Link('re.php?mn={$id}'));
 
 $field->onUpload(function ($id) use ($blobClient) {

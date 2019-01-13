@@ -2,15 +2,26 @@
 
 require 'connection.php';
 
-//session_start();
+$file = new File($db);
+$file->load($_SESSION['File_id']);
 
-var_dump($_SESSION);
+$id = $file->id;
+$file->load($id);
 
-//$blobClient = $_SESSION['blobClient'];
-$containerName = $_SESSION['containerName'];
+try{
+      // Delete container.
+      $blobClient->deleteContainer($file["ContainerName"]);
+  }
+  catch(ServiceException $e){
+      // Handle exception based on error codes and messages.
+      // Error codes and messages are here:
+      // http://msdn.microsoft.com/library/azure/dd179439.aspx
+      $code = $e->getCode();
+      $error_message = $e->getMessage();
+      new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
+  }
 
-$blobClient->deleteContainer($containerName);
+session_unset();
+$file->delete();
 
-//unset_session();
-
-//header('Location: file.php');
+header('Location: index.php');
