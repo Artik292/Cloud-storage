@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+date_default_timezone_set('UTC');
+
 require 'vendor/autoload.php';
 require 'random_string.php';
 require 'myupload.php';
@@ -24,7 +26,7 @@ if (isset($_ENV['CLEARDB_DATABASE_URL'])) {
  }
 
 class File extends \atk4\data\Model {
-	public $table = 'files';
+	public $table = 'file';
 function init() {
 	parent::init();
   $this->addField('ContainerName',['caption'=>'Container name']);
@@ -32,6 +34,31 @@ function init() {
   $this->addField('MetaType',['caption'=>'Meta file type']);
   $this->addField('MetaSize',['caption'=>'Meta file size']);
   $this->addField('MetaIsImage',['type'=>'boolean','caption'=>'Meta file is image']);
+  $this->hasOne('folder_id', new Folder())->addTitle();
+}
+}
+
+class Folder extends \atk4\data\Model {
+	public $table = 'folder';
+function init() {
+	parent::init();
+  $this->addField('name',['caption'=>'Name']);
+  $this->addField('DateCreated',['caption'=>'Created']);
+  $this->addField('DateModify',['caption'=>'Modified']);
+  $this->addField('Amount',['caption'=>'Amout of files']);
+  $this->hasMany('File');
+  $this->hasOne('account_id',new Account())->addTitle();
+}
+}
+
+class Account extends \atk4\data\Model {
+	public $table = 'account';
+function init() {
+	parent::init();
+  $this->addField('Email',['caption'=>'E-mail']);
+  $this->addField('name',['caption'=>'Nick name']);
+  $this->addField('Password',['caption'=>'Password','type'=>'password']);
+  $this->hasMany('Folder');
 }
 }
 

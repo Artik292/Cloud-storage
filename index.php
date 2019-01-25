@@ -33,6 +33,13 @@ if (@$_SESSION['admin']) {
 }
 
 $model = new File($db);
+
+/**
+
+  ADD HOOK
+
+**/
+
 $model->addHook('beforeDelete', function($model) use ($blobClient) {
     //$_SESSION['model_id'] = $model->id;
     $id = $model->id;
@@ -61,6 +68,10 @@ $model->addHook('beforeDelete', function($model) use ($blobClient) {
 
 $grid->setModel($model);
 $grid->addDecorator('MetaName', new \atk4\ui\TableColumn\Link('re.php?mn={$id}'));
+
+/**
+  ON UPLOAD
+**/
 
 $field->onUpload(function ($id) use ($blobClient) {
 
@@ -123,6 +134,10 @@ $field->onUpload(function ($id) use ($blobClient) {
   return new atk4\ui\jsNotify(['content' => 'File is uploaded!', 'color' => 'green']);
 });
 
+/**
+  ON DELETE
+**/
+
 $field->onDelete(function ($fileId) use ($blobClient){
 
 
@@ -144,6 +159,11 @@ $field->onDelete(function ($fileId) use ($blobClient){
     return new atk4\ui\jsNotify(['content' => $_SESSION['name_file'].' has been removed!', 'color' => 'green']);
 });
 
+/**
+
+ON SAVE
+
+**/
 
 $form->onSubmit(function ($form) use($db,$image_types) {
 
