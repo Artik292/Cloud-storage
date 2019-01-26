@@ -67,3 +67,7 @@ foreach ($folder as $fold) {
               break;
 }
 }
+
+$app->add(['ui'=>'hidden divider']);
+
+$app->add(['Button','Log out','red'])->link(['logout']);

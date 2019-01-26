@@ -24,6 +24,19 @@ $form->onSubmit(function($form) use($someone) {
     if (isset($someone->id)) {
         return new atk4\ui\jsNotify(['content' => 'This email is already in use', 'color' => 'red']);
     } else {
-        return new atk4\ui\jsNotify(['content' => 'Good!', 'color' => 'green']);
+      $someone->tryLoadby('name',$form->model['nickname']);
+      if (isset($someone->id)) {
+          return new atk4\ui\jsNotify(['content' => 'This Nick name is already in use', 'color' => 'red']);
+      } else {
+          if ($form->model['password-1'] == $form->model['password-2']) {
+            $someone['name'] = $form->model['nickname'];
+            $someone['Email'] = $form->model['email'];
+            $someone['Password'] = $form->model['password-1'];
+            $someone->save();
+            return new \atk4\ui\jsExpression('document.location = "index.php" ');
+          } else {
+            return new atk4\ui\jsNotify(['content' => 'Passwords are not the same', 'color' => 'red']);
+          }
+      }
     }
 });
