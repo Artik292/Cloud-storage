@@ -5,7 +5,9 @@ require 'connection.php';
 $app = new \atk4\ui\App('My Filestore Demo alfa(0.0.2)');
 $app->initLayout('Centered');
 
-$app->add(['Header','Registration','center aligned huge green']);
+$app->add(['Button','Log in','big inverted green','icon'=>'sign in'])->link(['login']);
+
+$app->add(['Header','Registration','center aligned huge blue']);
 
 $form = $app->add(['Form']);
 $form->addField('email',['caption'=>'Email']);
@@ -14,6 +16,8 @@ $form->addField('password-1',['caption'=>'Password']);
 $form->addField('password-2',['caption'=>'Confirm password']);
 
 $someone = new Account($db);
+
+$form->buttonSave->set('Register');
 
 $form->onSubmit(function($form) use($someone) {
     $someone->tryLoadby('Email',$form->model['email']);

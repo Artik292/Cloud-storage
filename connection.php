@@ -1,5 +1,21 @@
+
+
 <?php
 session_start();
+
+$place = $_SERVER['PHP_SELF'];
+$place = explode('/',$place);
+
+$session_is_not_set = (!(isset($_SESSION['user_id'])));
+$page_not_login_php = (!(in_array('login.php' , $place)));
+$page_not_auth_php = (!(in_array('auth.php' , $place)));
+
+$answ_1 = ($page_not_login_php && $page_not_auth_php);
+$answ_2 = ($session_is_not_set && $answ_1);
+
+if ($answ_2) {
+  header('Location: login.php');
+}
 
 date_default_timezone_set('UTC');
 
@@ -43,10 +59,11 @@ class Folder extends \atk4\data\Model {
 function init() {
 	parent::init();
   $this->addField('name',['caption'=>'Name']);
+  $this->addField('Image');
   $this->addField('DateCreated',['caption'=>'Created']);
   $this->addField('DateModify',['caption'=>'Modified']);
   $this->addField('Amount',['caption'=>'Amout of files']);
-  $this->hasMany('File');
+  $this->hasMany('File', new File);
   $this->hasOne('account_id',new Account())->addTitle();
 }
 }
