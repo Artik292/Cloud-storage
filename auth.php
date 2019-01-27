@@ -33,6 +33,9 @@ $form->onSubmit(function($form) use($someone) {
             $someone['Email'] = $form->model['email'];
             $someone['Password'] = $form->model['password-1'];
             $someone->save();
+            $someone->tryLoadby('Email',$form->model['email']);
+            $_SESSION['user_id'] = $someone->id;
+            $someone->unload();
             return new \atk4\ui\jsExpression('document.location = "index.php" ');
           } else {
             return new atk4\ui\jsNotify(['content' => 'Passwords are not the same', 'color' => 'red']);

@@ -38,44 +38,30 @@ $model = new File($db);
 
 
 $vir = $app->add('VirtualPage');
-//$vir->set(function($vir) use ($model,$blobClient,$app,$db) {
+$vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
 
-  $form = $app->add('Form');
+  $form = $vir->add('Form');
   $field = $form->addField('file', ['MyUpload', ['accept' => ['.png', '.jpg']]]);
 
-/**
-  BEFORE DELETE
-**/
-/*
 
-  $model->addHook('beforeDelete', function($model) use ($blobClient) {
-      $id = $model->id;
-      $model->load($id);
-
-      try{
-            // Delete container.
-            $blobClient->deleteContainer($model["ContainerName"]);
-        }
-        catch(ServiceException $e){
-            // Handle exception based on error codes and messages.
-            // Error codes and messages are here:
-            // http://msdn.microsoft.com/library/azure/dd179439.aspx
-            $code = $e->getCode();
-            $error_message = $e->getMessage();
-            new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
-        }
+  $field->onDelete(function ($fileId) use ($blobClient){
+    try{
+          // Delete container.
+          $blobClient->deleteContainer($_SESSION["containerName"]);
+      }
+      catch(ServiceException $e){
+          $code = $e->getCode();
+          $error_message = $e->getMessage();
+          new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
+      }
 
 
-        return new atk4\ui\jsNotify(['content' => $model['MetaName'].' has been removed!', 'color' => 'green']);
+      return new atk4\ui\jsNotify(['content' => $_SESSION['name_file'].' has been removed!', 'color' => 'green']);
+  });
 
-  }
-  );
+  //require 'folder.php';
 
-  /**
-    ON UPLOAD
-  **/
-/*
-  $field->onUpload(function ($blobClient) {
+  $field->onUpload(function ($id) use ($blobClient) {
 
 
       $fileToUpload = $_SESSION['tmp_file'];
@@ -87,8 +73,8 @@ $vir = $app->add('VirtualPage');
       $createContainerOptions->addMetaData("key1", "value1");
       $createContainerOptions->addMetaData("key2", "value2");
 
-      $containerName = "blockblobs".generateRandomString();
-      $_SESSION['containerName'] = $containerName;
+        $containerName = "blockblobs".generateRandomString();
+        $_SESSION['containerName'] = $containerName;
 
       try {
           // Create container.
@@ -134,66 +120,37 @@ $vir = $app->add('VirtualPage');
     return new atk4\ui\jsNotify(['content' => 'File is uploaded!', 'color' => 'green']);
   });
 
-  /**
-    ON DELETE
-  **/
-
-  $field->onDelete(function ($fileId) use ($blobClient){
 
 
-
-    try{
-          // Delete container.
-          $blobClient->deleteContainer($_SESSION["containerName"]);
-      }
-      catch(ServiceException $e){
-          // Handle exception based on error codes and messages.
-          // Error codes and messages are here:
-          // http://msdn.microsoft.com/library/azure/dd179439.aspx
-          $code = $e->getCode();
-          $error_message = $e->getMessage();
-          new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
-      }
-
-
-      return new atk4\ui\jsNotify(['content' => $_SESSION['name_file'].' has been removed!', 'color' => 'green']);
-  });
-
-/*  $form->onSubmit(function ($form) use($db) {
+  $form->onSubmit(function ($form) use($db,$image_types) {
 
       $file = new File($db);
       $file['ContainerName'] = $_SESSION["containerName"];
       $file['MetaName'] = $_SESSION['name_file'];
       $file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
       $file['MetaSize'] = $_SESSION['size_file'];
-
-      $image_types = array(
-        'jpg',
-        'jpeg',
-        'png',
-        'gif',
-        'bmp'
-      );
-
       if (in_array($file['MetaType'],$image_types)) {
           $file['MetaIsImage'] = TRUE;
       } else {
           $file['MetaIsImage'] = FALSE;
       }
-
+      $file['folder_id'] = $_SESSION['folder_id'];
       $file->save();
+      $user_id = $_SESSION['user_id'];
+      $folder_id = $_SESSION['folder_id'];
       session_unset();
+      $_SESSION['user_id'] = $user_id;
+      $_SESSION['folder_id'] = $folder_id;
       return new \atk4\ui\jsExpression('document.location="file.php"');
-  }); */
+  });
 
 
-//});
+});
 
-//$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));
+$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));
 
 $col_2->add(['ui'=>'hidden divider']);
 
-require 'folder.php';
 
 
 /**

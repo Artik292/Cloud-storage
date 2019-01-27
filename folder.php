@@ -127,7 +127,7 @@ $field->onUpload(function ($id) use ($blobClient) {
 /**
   ON DELETE
 **/
-
+/*
 $field->onDelete(function ($fileId) use ($blobClient){
 
 
@@ -148,7 +148,7 @@ $field->onDelete(function ($fileId) use ($blobClient){
 
     return new atk4\ui\jsNotify(['content' => $_SESSION['name_file'].' has been removed!', 'color' => 'green']);
 });
-
+*/
 /**
 
 ON SAVE
