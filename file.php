@@ -27,7 +27,7 @@ $col_1->add(['ui'=>'hidden divider']);
 
 /**
 
- ADD BUTTON
+ ADD BUTTON and VirtualPage
 
 **/
 
@@ -41,8 +41,9 @@ $vir = $app->add('VirtualPage');
 $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
 
   $form = $vir->add('Form');
-  $field = $form->addField('file', ['MyUpload', ['accept' => ['.png', '.jpg']]]);
+  $field = $form->addField('file', ['MyUpload']);
 
+  //$field = $form->addField('file', ['MyUpload', ['accept' => ['.png', '.jpg']]]);
 
   $field->onDelete(function ($fileId) use ($blobClient){
     try{
@@ -58,8 +59,6 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
 
       return new atk4\ui\jsNotify(['content' => $_SESSION['name_file'].' has been removed!', 'color' => 'green']);
   });
-
-  //require 'folder.php';
 
   $field->onUpload(function ($id) use ($blobClient) {
 
@@ -151,6 +150,20 @@ $add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));
 
 $col_2->add(['ui'=>'hidden divider']);
 
+/**
+
+VirtualPage FOR Image
+
+**/
+
+$vir = $app->add('VirtualPage');
+$vir->set(function($vir){
+    $vir->add(['Button','No session','big green']);
+    return 1;
+});
+
+$test_button = $app->add(['Button','TEST']);
+$test_button->on('click', new \atk4\ui\jsModal('New File',$vir));
 
 
 /**
@@ -178,19 +191,27 @@ foreach ($files as $file) {
 
     switch ($i) {
         case 1:
-              $col_1->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $im = $col_1->add(['Image',$file_image,'big'])->on('click', function($vir) use ($file) {
+                $_SESSION['file_id'] = $file->id;
+                return new \atk4\ui\jsModal('Image',$vir);
+              });
+              //$im->on('click', new \atk4\ui\jsModal('New File',$vir));
               $i++;
               break;
         case 2:
-              $col_2->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $im = $col_2->add(['Image',$file_image,'big']);
+              $im->on('click', function ($file) use ($vir) {
+                $_SESSION['image_id'] = $file->id;
+                return; new \atk4\ui\jsModal('Image',$vir);
+              });
               $i++;
               break;
         case 3:
-              $col_3->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_3->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsModal('Image',$vir));
               $i++;
               break;
         case 4:
-              $col_4->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_4->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsModal('Image',$vir));
               $i=1;
               $col_1->add(['ui'=>'hidden divider']);
               $col_2->add(['ui'=>'hidden divider']);
@@ -199,7 +220,6 @@ foreach ($files as $file) {
               break;
 }
 }
-
 
 
 /*$blob = $blobClient->getBlob($file['ContainerName'], $file['MetaName']);
