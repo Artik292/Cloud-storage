@@ -147,24 +147,24 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
 });
 
 $add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));
-
-$col_2->add(['ui'=>'hidden divider']);
-
 /**
 
-VirtualPage FOR Image
+VirtualPage FOR File
 
 **/
 
 $vir = $app->add('VirtualPage');
-$vir->set(function($vir){
-    $vir->add(['Button','No session','big green']);
+$vir->set(function($vir) use($db){
+    $file = new File($db);
+    $file->load($_SESSION['file_id']);
+    if ($file['MetaIsImage']) {
+        $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+    } else {
+        $file_image = 'no_image.png';
+    }
+    $vir->add(['Image',$file_image,'medium centered']);
     return 1;
 });
-
-$test_button = $app->add(['Button','TEST']);
-$test_button->on('click', new \atk4\ui\jsModal('New File',$vir));
-
 
 /**
 
@@ -184,34 +184,42 @@ $col_4 = $columns->addColumn(4);
 $i = 1;
 
 foreach ($files as $file) {
-    $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'] ?? 'no_image.png';
+    if ($file['MetaIsImage']) {
+      $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+    } else {
+      $file_image = 'no_image.png';
+    }
 
     $link = '"re.php?mn='.$file->id.'"';
     $link = 'document.location='.$link;
 
     switch ($i) {
         case 1:
-              $im = $col_1->add(['Image',$file_image,'big'])->on('click', function($vir) use ($file) {
-                $_SESSION['file_id'] = $file->id;
-                return new \atk4\ui\jsModal('Image',$vir);
+              $im = $col_1->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
+              $_SESSION['file_id'] = $file->id;
+              return new \atk4\ui\jsModal('Image',$vir);
               });
-              //$im->on('click', new \atk4\ui\jsModal('New File',$vir));
               $i++;
               break;
         case 2:
-              $im = $col_2->add(['Image',$file_image,'big']);
-              $im->on('click', function ($file) use ($vir) {
-                $_SESSION['image_id'] = $file->id;
-                return; new \atk4\ui\jsModal('Image',$vir);
+              $im = $col_2->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
+              $_SESSION['file_id'] = $file->id;
+              return new \atk4\ui\jsModal('Image',$vir);
               });
               $i++;
               break;
         case 3:
-              $col_3->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsModal('Image',$vir));
+              $col_3->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
+              $_SESSION['file_id'] = $file->id;
+              return new \atk4\ui\jsModal('Image',$vir);
+              });
               $i++;
               break;
         case 4:
-              $col_4->add(['Image',$file_image,'big'])->on('click', new \atk4\ui\jsModal('Image',$vir));
+              $col_4->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
+              $_SESSION['file_id'] = $file->id;
+              return new \atk4\ui\jsModal('Image',$vir);
+              });
               $i=1;
               $col_1->add(['ui'=>'hidden divider']);
               $col_2->add(['ui'=>'hidden divider']);
@@ -220,6 +228,9 @@ foreach ($files as $file) {
               break;
 }
 }
+
+
+
 
 
 /*$blob = $blobClient->getBlob($file['ContainerName'], $file['MetaName']);
