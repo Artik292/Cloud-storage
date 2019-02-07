@@ -47,18 +47,22 @@ foreach ($folder as $fold) {
     switch ($i) {
         case 1:
               $col_1->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_1->add(['Header',$fold['name'],'centered']);
               $i++;
               break;
         case 2:
               $col_2->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_2->add(['Header',$fold['name'],'centered']);
               $i++;
               break;
         case 3:
               $col_3->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_3->add(['Header',$fold['name'],'centered']);
               $i++;
               break;
         case 4:
               $col_4->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_4->add(['Header',$fold['name'],'centered']);
               $i=1;
               $col_1->add(['ui'=>'hidden divider']);
               $col_2->add(['ui'=>'hidden divider']);
