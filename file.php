@@ -27,7 +27,7 @@ $col_1->add(['ui'=>'hidden divider']);
 
 /**
 
- ADD BUTTON and VirtualPage
+ ADD BUTTON
 
 **/
 
@@ -155,6 +155,7 @@ VirtualPage FOR File
 
 $vir = $app->add('VirtualPage');
 $vir->set(function($vir) use($db){
+
     $file = new File($db);
     $file->load($_SESSION['file_id']);
     if ($file['MetaIsImage']) {
@@ -163,6 +164,9 @@ $vir->set(function($vir) use($db){
         $file_image = 'no_image.png';
     }
     $vir->add(['Image',$file_image,'medium centered']);
+    $vir->add(['Header',$file['MetaName'],'big centered']);
+    $vir->add(['ui'=>'divider']);
+    $vir->add(['Button','Download','big green','iconRight'=>'download'])->link("https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName']);
     return 1;
 });
 
