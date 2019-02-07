@@ -37,6 +37,7 @@ $folder = new Folder($db);
 
 $i = 1;
 
+//lol
 foreach ($folder as $fold) {
     $folder_icon = $fold['Image'] ?? 'no_image.png';
     $id = $fold->id;
