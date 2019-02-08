@@ -1,13 +1,11 @@
 <?php
-
-require 'connection.php';
-
+/*
 $file = new File($db);
 $file->load($_SESSION['File_id']);
 
 $id = $file->id;
 $file->load($id);
-
+*/
 try{
       // Delete container.
       $blobClient->deleteContainer($file["ContainerName"]);
@@ -21,7 +19,7 @@ try{
       new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
   }
 
-session_unset();
+//session_unset();
 $file->delete();
 
-header('Location: index.php');
+//header('Location: index.php');

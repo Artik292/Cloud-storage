@@ -1,8 +1,4 @@
-
-
 <?php
-
-//require 'connection.php';
 
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
