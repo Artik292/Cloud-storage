@@ -9,11 +9,15 @@ $app->add(['Button','Log in','big inverted green','icon'=>'sign in'])->link(['lo
 
 $app->add(['Header','Registration','center aligned huge blue']);
 
+$model = new \atk4\data\Model(new \atk4\data\Persistence_Array($a));
+
+$model->addField('email',['caption'=>'Email']);
+$model->addField('nickname',['caption'=>'Username']);
+$model->addField('password-1',['caption'=>'Password','type'=>'password']);
+$model->addField('password-2',['caption'=>'Confirm password','type'=>'password']);
+
 $form = $app->add(['Form']);
-$form->addField('email',['caption'=>'Email']);
-$form->addField('nickname',['caption'=>'Username']);
-$form->addField('password-1',['caption'=>'Password']);
-$form->addField('password-2',['caption'=>'Confirm password']);
+$form->setModel($model);
 
 $someone = new Account($db);
 

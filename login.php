@@ -10,9 +10,13 @@ $app->add(['Button','Sign up','big green','iconRight'=>'user plus'])->link(['aut
 
 $app->add(['Header','Login']);
 
+$model = new \atk4\data\Model(new \atk4\data\Persistence_Array($a));
+
+$model->addField('nick',['caption'=>'E-mail or Nick name']);
+$model->addField('password',['type'=>'password']);
+
 $form = $app->add(['Form']);
-$form->addField('nick',['caption'=>'E-mail or Nick name']);
-$form->addField('password');
+$form->setModel($model);
 
 $account = new Account($db);
 
