@@ -8,5 +8,5 @@ $app->initLayout('Admin');
 require 'layout.php';
 
 $CRUD = $app->add(['CRUD']);
-$CRUD->setModel(new Account($db));
+$CRUD->setModel(new File($db));
 $CRUD->addQuickSearch(['name']);
