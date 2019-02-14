@@ -76,3 +76,36 @@ foreach ($folder as $fold) {
 $app->add(['ui'=>'hidden divider']);
 
 $app->add(['Button','Log out','red'])->link(['logout']);
+
+/**
+I will fix it
+**/
+
+$vir = $app->add('VirtualPage');
+$vir->set(function($vir) use ($db) {
+            $model = new \atk4\data\Model(new \atk4\data\Persistence_Array($a));
+            $model->addField('password',['caption'=>' ','type'=>'password']);
+
+            $form = $vir->add('Form');
+            $form->setModel($model);
+            $form->buttonSave->set('');
+            $form->onSubmit(function($form) {
+                $password = $_ENV['admin_password'] ?? 'password';
+                if ($form->model['password'] == $password) {
+                    if (isset($_ENV['admin_password'])) {
+                        return new \atk4\ui\jsExpression('document.location="admin/"');
+                    } else {
+                        return new \atk4\ui\jsExpression('document.location="admin/index.php"');
+                    }
+                } else {
+                    /**
+                    TIME BAN
+                    **/
+                    return new \atk4\ui\jsExpression('document.location="index.php"');
+                }
+    });
+});
+
+$app->add(['ui'=>'hidden divider']);
+
+$app->add(['Button','','small inverted white'])->on('click', new \atk4\ui\jsModal('',$vir));
