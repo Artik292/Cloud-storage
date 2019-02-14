@@ -72,6 +72,6 @@ function init() {
   $this->addField('Email',['caption'=>'E-mail']);
   $this->addField('name',['caption'=>'Nick name']);
   $this->addField('Password',['caption'=>'Password']);
-  $this->hasMany('Folder');
+  $this->hasMany('Folder', new Folder);
 }
 }
