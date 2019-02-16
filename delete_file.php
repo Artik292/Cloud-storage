@@ -23,4 +23,4 @@ $file->load($_SESSION['file_id']);
 unset($_SESSION['file_id']);
 
 
-header('Location: index.php');
+header('Location: file.php');
