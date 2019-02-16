@@ -67,8 +67,9 @@ $vir->set(function($vir) use($db,$blobClient,$folder){
                 $delete_name = 'Delete file';
             }
             $vir->add(['Button',$delete_name,'red','icon'=>'trash alternate'])->on('click', function() use($blobClient,$file) {
-              require 'delete.php';
-              return new \atk4\ui\jsExpression('document.location = "file.php" ');
+              $_SESSION['file_id'] = $file->id;
+              //require 'delete_file.php';
+              return new \atk4\ui\jsExpression('document.location = "delete_file.php" ');
             });
     }
 

@@ -2,12 +2,8 @@
 
 require 'connection.php';
 
-$folder = new Folder($db);
-$folder->load($_SESSION['folder_id']);
-
-$files = $folder->ref('File');
-
-foreach ($files as $file) {
+$file = new File($db);
+$file->load($_SESSION['file_id']);
 
   try{
         // Delete container.
@@ -23,11 +19,8 @@ foreach ($files as $file) {
     }
 
   $file->delete();
-}
 
-$folder->delete();
-
-unset($_SESSION['folder_id']);
+unset($_SESSION['file_id']);
 
 
-//header('Location: index.php');
+header('Location: index.php');
