@@ -105,7 +105,8 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
       $file = new File($db);
       $file['ContainerName'] = $_SESSION["containerName"];
       $file['MetaName'] = $_SESSION['name_file'];
-      $file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
+      //$file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
+      $file['MetaType'] = substr($_SESSION['name_file'], strpos($_SESSION['name_file'], ".") + 1);
       $file['MetaSize'] = $_SESSION['size_file'];
       if (in_array($file['MetaType'],$image_types)) {
           $file['MetaIsImage'] = TRUE;
