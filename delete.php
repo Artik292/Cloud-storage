@@ -30,4 +30,4 @@ $folder->delete();
 unset($_SESSION['folder_id']);
 
 
-//header('Location: index.php');
+header('Location: index.php');
