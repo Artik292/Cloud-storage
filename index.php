@@ -39,7 +39,14 @@ $i = 1;
 
 //lol
 foreach ($folder as $fold) {
-    $folder_icon = $fold['Image'] ?? 'no_image.png';
+    //$folder_icon = $fold['Image'] ?? 'no_image.png';
+    //if (isset($fold['Image'])) {
+    if (!($fold['Image'] == NULL)) {
+      $folder_icon = $fold['Image'];
+    } else {
+      $folder_icon = 'no_image.png';
+    }
+
     $id = $fold->id;
 
     $link = '"re.php?mn='.$id.'"';

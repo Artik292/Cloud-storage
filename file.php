@@ -2,8 +2,6 @@
 
 require 'connection.php';
 
-
-
 $app = new \atk4\ui\App('Main Page');
 $app->initLayout('Centered');
 
@@ -48,10 +46,19 @@ VirtualPage FOR File
 $vir = $app->add('VirtualPage');
 $vir->set(function($vir) use($db,$blobClient,$folder){
 
+
+
     $file = new File($db);
     $file->load($_SESSION['file_id']);
     if ($file['MetaIsImage']) {
         $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+        $vir->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
+          $folder = new Folder($db);
+          $folder->load($_SESSION['folder_id']);
+          $folder['Image'] = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+          $folder->save();
+          return new atk4\ui\jsNotify(['content' => 'Ready', 'color' => 'blue']);
+        });
     } else {
         $file_image = 'no_image.png';
     }
