@@ -60,7 +60,9 @@ function init() {
   $this->addField('DateCreated',['caption'=>'Created']);
   $this->addField('DateModify',['caption'=>'Modified']);
   $this->addField('Amount',['caption'=>'Amout of files']);
+  $this->addField('Is_SubFolder',['type'=>'boolean']);
   $this->hasMany('File', new File);
+  $this->hasMany('SubFolder', new SubFolder);
   $this->hasOne('account_id',new Account())->addTitle();
 }
 }
@@ -73,5 +75,14 @@ function init() {
   $this->addField('name',['caption'=>'Nick name']);
   $this->addField('Password',['caption'=>'Password']);
   $this->hasMany('Folder', new Folder);
+}
+}
+
+class SubFolder extends \atk4\data\Model {
+	public $table = 'in_folder';
+function init() {
+	parent::init();
+  $this->addField('child_folder_id');
+  $this->hasOne('folder_id',new Folder()) ;
 }
 }
