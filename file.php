@@ -21,20 +21,28 @@ $col_1->add(['ui'=>'hidden divider']);
 
 /**
 
- ADD BUTTON
+ ADD FILE AND ADD FOLDER
 
 **/
-
+// FILE //
 if ($_SESSION['user_id'] == $folder['account_id']) {
 
-$add_file_button = $col_2->add(['Button','Add file','inverted green','icon'=>'plus'])->link(['index']);
+$add_file_button = $col_2->add(['Button','Add file','inverted green','icon'=>'plus']);
 
 $model = new File($db);
 
 require 'AddButton.php';
 
-$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));
+$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from AddButton.php
 
+// FOLDER //
+  $model = new Folder($db);
+
+  require 'AddSubFolder.php';
+
+  $add_folder_button = $col_2->add(['Button','Add folder','inverted yellow','icon'=>'folder']);
+
+  $add_folder_button->on('click', new \atk4\ui\jsModal('New Folder',$vir)); //$vir is from AddFolder.php
 }
 
 /**
@@ -144,6 +152,51 @@ foreach ($files as $file) {
               $col_4->add(['ui'=>'hidden divider']);
               break;
 }
+}
+
+$sub_folder = $folder->ref('SubFolder');
+
+foreach ($sub_folder as $sub_fold) {
+    $fold = new Folder($db);
+    $fold->load($sub_fold['child_folder_id']);
+
+    if (!($fold['Image'] == NULL)) {
+      $folder_icon = $fold['Image'];
+    } else {
+      $folder_icon = 'no_image.png';
+    }
+
+    $id = $fold->id;
+
+    $link = '"re.php?mn='.$id.'"';
+    $link = 'document.location='.$link;
+
+    switch ($i) {
+        case 1:
+              $col_1->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_1->add(['Header',$fold['name'],'centered']);
+              $i++;
+              break;
+        case 2:
+              $col_2->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_2->add(['Header',$fold['name'],'centered']);
+              $i++;
+              break;
+        case 3:
+              $col_3->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_3->add(['Header',$fold['name'],'centered']);
+              $i++;
+              break;
+        case 4:
+              $col_4->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_4->add(['Header',$fold['name'],'centered']);
+              $i=1;
+              $col_1->add(['ui'=>'hidden divider']);
+              $col_2->add(['ui'=>'hidden divider']);
+              $col_3->add(['ui'=>'hidden divider']);
+              $col_4->add(['ui'=>'hidden divider']);
+              break;
+    }
 }
 
 

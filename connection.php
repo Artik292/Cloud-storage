@@ -29,7 +29,11 @@ use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
 use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
-$connectionString = "DefaultEndpointsProtocol=https;AccountName=artik292;AccountKey=+9Pmt9DxE4IwWGdrm47AXaP7ddV/ZPrryCylGScm9afqaS7OZzhDuYokWUy7KeuPgE4+NlT2Qnry1FYqYlRdIQ==";
+if (isset($_ENV['con_str'])) {
+  $connectionString = $_ENV['con_str'];
+} else {
+  require 'connectionString.php';
+}
 
 $blobClient = BlobRestProxy::createBlobService($connectionString);
 
@@ -61,7 +65,9 @@ function init() {
   $this->addField('DateCreated',['caption'=>'Created']);
   $this->addField('DateModify',['caption'=>'Modified']);
   $this->addField('Amount',['caption'=>'Amout of files']);
+  $this->addField('Is_SubFolder',['type'=>'boolean']);
   $this->hasMany('File', new File);
+  $this->hasMany('SubFolder', new SubFolder);
   $this->hasOne('account_id',new Account())->addTitle();
 }
 }
@@ -74,6 +80,15 @@ function init() {
   $this->addField('name',['caption'=>'Nick name']);
   $this->addField('Password',['caption'=>'Password','type'=>'password']);
   $this->hasMany('Folder');
+}
+}
+
+class SubFolder extends \atk4\data\Model {
+	public $table = 'in_folder';
+function init() {
+	parent::init();
+  $this->addField('child_folder_id');
+  $this->hasOne('folder_id',new Folder()) ;
 }
 }
 

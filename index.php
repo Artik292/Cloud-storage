@@ -18,6 +18,7 @@ $vir->set(function($vir) use ($db) {
             $form->setModel(new Folder($db),['name']);
             $form->onSubmit(function($form) {
                 $form->model['account_id'] = $_SESSION['user_id'];
+                $form->model['Is_SubFolder'] = FALSE;
                 $form->model->save();
                 return [$form->success('Folder added!'),new \atk4\ui\jsExpression('document.location="index.php"')];
     });
@@ -37,47 +38,50 @@ $folder = new Folder($db);
 
 $i = 1;
 
-//lol
 foreach ($folder as $fold) {
     //$folder_icon = $fold['Image'] ?? 'no_image.png';
     //if (isset($fold['Image'])) {
-    if (!($fold['Image'] == NULL)) {
-      $folder_icon = $fold['Image'];
-    } else {
-      $folder_icon = 'no_image.png';
+
+    if (!($fold['Is_SubFolder'])) {
+
+        if (!($fold['Image'] == NULL)) {
+          $folder_icon = $fold['Image'];
+        } else {
+          $folder_icon = 'no_image.png';
+        }
+
+        $id = $fold->id;
+
+        $link = '"re.php?mn='.$id.'"';
+        $link = 'document.location='.$link;
+
+        switch ($i) {
+            case 1:
+                  $col_1->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+                  $col_1->add(['Header',$fold['name'],'centered']);
+                  $i++;
+                  break;
+            case 2:
+                  $col_2->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+                  $col_2->add(['Header',$fold['name'],'centered']);
+                  $i++;
+                  break;
+            case 3:
+                  $col_3->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+                  $col_3->add(['Header',$fold['name'],'centered']);
+                  $i++;
+                  break;
+            case 4:
+                  $col_4->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+                  $col_4->add(['Header',$fold['name'],'centered']);
+                  $i=1;
+                  $col_1->add(['ui'=>'hidden divider']);
+                  $col_2->add(['ui'=>'hidden divider']);
+                  $col_3->add(['ui'=>'hidden divider']);
+                  $col_4->add(['ui'=>'hidden divider']);
+                  break;
     }
-
-    $id = $fold->id;
-
-    $link = '"re.php?mn='.$id.'"';
-    $link = 'document.location='.$link;
-
-    switch ($i) {
-        case 1:
-              $col_1->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_1->add(['Header',$fold['name'],'centered']);
-              $i++;
-              break;
-        case 2:
-              $col_2->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_2->add(['Header',$fold['name'],'centered']);
-              $i++;
-              break;
-        case 3:
-              $col_3->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_3->add(['Header',$fold['name'],'centered']);
-              $i++;
-              break;
-        case 4:
-              $col_4->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_4->add(['Header',$fold['name'],'centered']);
-              $i=1;
-              $col_1->add(['ui'=>'hidden divider']);
-              $col_2->add(['ui'=>'hidden divider']);
-              $col_3->add(['ui'=>'hidden divider']);
-              $col_4->add(['ui'=>'hidden divider']);
-              break;
-}
+  }
 }
 
 $app->add(['ui'=>'hidden divider']);
