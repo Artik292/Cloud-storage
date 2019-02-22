@@ -8,7 +8,7 @@ use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
 /*
 
-$app = new \atk4\ui\App('My Filestore Demo alfa(0.0.2)');
+$app = new \atk4\ui\App('My Filestore Demo alfa(0.0.3)');
 $app->initLayout('Centered');
 
 $app->add(['Label','Images only!','massive red']);
