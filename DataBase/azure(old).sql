@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Янв 25 2019 г., 15:03
+-- Время создания: Янв 26 2019 г., 18:03
 -- Версия сервера: 10.1.30-MariaDB
 -- Версия PHP: 7.2.1
 
@@ -35,13 +35,6 @@ CREATE TABLE `account` (
   `Password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `account`
---
-
-INSERT INTO `account` (`id`, `Email`, `name`, `Password`) VALUES
-(1, 'artik292@gmail.com', 'Artur Konevnikov', 'Password');
-
 -- --------------------------------------------------------
 
 --
@@ -50,7 +43,7 @@ INSERT INTO `account` (`id`, `Email`, `name`, `Password`) VALUES
 
 CREATE TABLE `file` (
   `id` int(11) NOT NULL,
-  `ContainerName` varchar(70) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ContainerName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `MetaName` varchar(70) COLLATE utf8mb4_unicode_ci NOT NULL,
   `MetaType` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -68,19 +61,12 @@ CREATE TABLE `file` (
 CREATE TABLE `folder` (
   `id` int(11) NOT NULL,
   `name` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `DateModify` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Amount` int(10) UNSIGNED ZEROFILL NOT NULL,
+  `Image` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DateCreated` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DateModify` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Amount` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
   `account_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `folder`
---
-
-INSERT INTO `folder` (`id`, `name`, `DateCreated`, `DateModify`, `Amount`, `account_id`) VALUES
-(3, 'azurea', '0000-00-00 00:00:00', '2019-01-23 18:02:41', 0000000000, 1),
-(4, 'Artur Konevnikov', '0000-00-00 00:00:02', '2019-01-23 18:21:43', 0000000000, 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -114,7 +100,7 @@ ALTER TABLE `folder`
 -- AUTO_INCREMENT для таблицы `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `file`
@@ -126,7 +112,7 @@ ALTER TABLE `file`
 -- AUTO_INCREMENT для таблицы `folder`
 --
 ALTER TABLE `folder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

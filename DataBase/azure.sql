@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Янв 26 2019 г., 18:03
+-- Время создания: Фев 22 2019 г., 16:24
 -- Версия сервера: 10.1.30-MariaDB
 -- Версия PHP: 7.2.1
 
@@ -65,7 +65,20 @@ CREATE TABLE `folder` (
   `DateCreated` datetime DEFAULT CURRENT_TIMESTAMP,
   `DateModify` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Amount` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `Is_SubFolder` tinyint(1) NOT NULL DEFAULT '0',
   `account_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `in_folder`
+--
+
+CREATE TABLE `in_folder` (
+  `id` int(11) NOT NULL,
+  `child_folder_id` int(11) DEFAULT NULL,
+  `folder_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -93,6 +106,13 @@ ALTER TABLE `folder`
   ADD KEY `account_id` (`account_id`);
 
 --
+-- Индексы таблицы `in_folder`
+--
+ALTER TABLE `in_folder`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parent_folder_id` (`folder_id`);
+
+--
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
@@ -115,6 +135,12 @@ ALTER TABLE `folder`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT для таблицы `in_folder`
+--
+ALTER TABLE `in_folder`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Ограничения внешнего ключа сохраненных таблиц
 --
 
@@ -129,6 +155,12 @@ ALTER TABLE `file`
 --
 ALTER TABLE `folder`
   ADD CONSTRAINT `folder_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `in_folder`
+--
+ALTER TABLE `in_folder`
+  ADD CONSTRAINT `in_folder_ibfk_1` FOREIGN KEY (`folder_id`) REFERENCES `folder` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
