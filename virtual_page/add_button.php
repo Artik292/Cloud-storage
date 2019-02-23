@@ -28,8 +28,6 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
           $error_message = $e->getMessage();
           new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
       }
-
-
       return new atk4\ui\jsNotify(['content' => $_SESSION['name_file'].' has been removed!', 'color' => 'green']);
   });
 

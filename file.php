@@ -6,14 +6,12 @@ $app = new \atk4\ui\App('Main Page');
 $app->initLayout('Centered');
 
 $columns = $app->add('Columns');
-
 $col_1 = $columns->addColumn(8);
 $col_2 = $columns->addColumn(8);
 
 $folder = new Folder($db);
 $folder->load($_SESSION['folder_id']);
-
-$files = $folder->ref('File');
+$folder_has_file = $folder->ref('File');
 
 $col_1->add(['Button','Back','inverted blue','icon'=>'arrow alternate circle left'])->link(['index']);
 $col_1->add(['ui'=>'hidden divider']);
@@ -26,19 +24,16 @@ $col_1->add(['ui'=>'hidden divider']);
 **/
 // FILE //
 if ($_SESSION['user_id'] == $folder['account_id']) {
-
 $add_file_button = $col_2->add(['Button','Add file','inverted green','icon'=>'plus']);
-
 $model = new File($db);
-
-require 'AddButton.php';
+require 'virtual_page/add_button.php';
 
 $add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from AddButton.php
 
 // FOLDER //
   $model = new Folder($db);
 
-  require 'AddSubFolder.php';
+  require 'virtual_page/add_sub_folder.php';
 
   $add_folder_button = $col_2->add(['Button','Add folder','inverted yellow','icon'=>'folder']);
 
@@ -52,50 +47,30 @@ VirtualPage FOR File
 **/
 
 $vir = $app->add('VirtualPage');
-$vir->set(function($vir) use($db,$blobClient,$folder){
-
-
-
-    $file = new File($db);
-    $file->load($_SESSION['file_id']);
-    if ($file['MetaIsImage']) {
-        $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
-        $vir->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
-          $folder = new Folder($db);
-          $folder->load($_SESSION['folder_id']);
-          $folder['Image'] = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
-          $folder->save();
-          return new atk4\ui\jsNotify(['content' => 'Ready', 'color' => 'blue']);
-        });
-    } else {
-        $file_image = 'no_image.png';
-    }
-    $vir->add(['Image',$file_image,'medium centered']);
-    $vir->add(['Header',$file['MetaName'],'big centered']);
-    $vir->add(['ui'=>'divider']);
-    $vir->add(['Button','Download','big green','iconRight'=>'download'])->link("https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName']);
-
-    if ($_SESSION['user_id'] == $folder['account_id']) {
-            if ($file['MetaIsImage']) {
-                $delete_name = 'Delete image';
-            } else {
-                $delete_name = 'Delete file';
-            }
-            $vir->add(['Button',$delete_name,'red','icon'=>'trash alternate'])->on('click', function() use($blobClient,$file) {
-              $_SESSION['file_id'] = $file->id;
-              //require 'delete_file.php';
-              return new \atk4\ui\jsExpression('document.location = "delete_file.php" ');
-            });
-    }
-
-    return 1;
-});
-
+require 'virtual_page/file_show.php';
 /**
 
-  DECOR
+  DECOR for folders
 
 **/
+
+$sub_folder = $folder->ref('SubFolder');
+
+//echo !($sub_folder == NULL);
+//echo $_SESSION['folder_id'];
+//var_dump($sub_folder);
+
+foreach ($sub_folder as $sub_fold) {
+  $app->add(['Header','Folders']);
+  $app->add(['ui'=>'divider']);
+  break;
+}
+
+if (empty($sub_folder)) {
+  $app->add(['Header','Folders']);
+  $app->add(['ui'=>'divider']);
+}
+
 
 $app->add(['ui'=>'hidden divider']);
 
@@ -106,17 +81,92 @@ $col_2 = $columns->addColumn(4);
 $col_3 = $columns->addColumn(4);
 $col_4 = $columns->addColumn(4);
 
+/**
+
+  Adding Folders
+
+**/
+
 $i = 1;
+
+foreach ($sub_folder as $sub_fold) {
+    $fold = new Folder($db);
+    $fold->load($sub_fold['child_folder_id']);
+
+    if (!($fold['Image'] == NULL)) {
+      $folder_icon = $fold['Image'];
+    } else {
+      $folder_icon = 'src/folder.png';
+    }
+
+    $id = $fold->id;
+
+    $link = '"re.php?mn='.$id.'"';
+    $link = 'document.location='.$link;
+
+    switch ($i) {
+        case 1:
+              $col_1->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_1->add(['Header',$fold['name'],'centered']);
+              $i++;
+              break;
+        case 2:
+              $col_2->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_2->add(['Header',$fold['name'],'centered']);
+              $i++;
+              break;
+        case 3:
+              $col_3->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_3->add(['Header',$fold['name'],'centered']);
+              $i++;
+              break;
+        case 4:
+              $col_4->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
+              $col_4->add(['Header',$fold['name'],'centered']);
+              $i=1;
+              $col_1->add(['ui'=>'hidden divider']);
+              $col_2->add(['ui'=>'hidden divider']);
+              $col_3->add(['ui'=>'hidden divider']);
+              $col_4->add(['ui'=>'hidden divider']);
+              break;
+    }
+}
+
+/**
+
+  DECOR for files
+
+**/
+
+$files = $folder->ref('File');
+foreach ($files as $file) {
+  $app->add(['Header','Files','H1']);
+  $app->add(['ui'=>'divider']);
+  break;
+}
+
+$columns = $app->add('Columns');
+
+$col_1 = $columns->addColumn(4);
+$col_2 = $columns->addColumn(4);
+$col_3 = $columns->addColumn(4);
+$col_4 = $columns->addColumn(4);
+
+
+$i = 1;
+
+/**
+
+  Adding files
+
+**/
 
 foreach ($files as $file) {
     if ($file['MetaIsImage']) {
       $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
     } else {
-      $file_image = 'no_image.png';
+      $file_image = 'src/no_image.png';
     }
-
-    $link = '"re.php?mn='.$file->id.'"';
-    $link = 'document.location='.$link;
 
     switch ($i) {
         case 1:
@@ -154,80 +204,9 @@ foreach ($files as $file) {
 }
 }
 
-$sub_folder = $folder->ref('SubFolder');
-
-foreach ($sub_folder as $sub_fold) {
-    $fold = new Folder($db);
-    $fold->load($sub_fold['child_folder_id']);
-
-    if (!($fold['Image'] == NULL)) {
-      $folder_icon = $fold['Image'];
-    } else {
-      $folder_icon = 'no_image.png';
-    }
-
-    $id = $fold->id;
-
-    $link = '"re.php?mn='.$id.'"';
-    $link = 'document.location='.$link;
-
-    switch ($i) {
-        case 1:
-              $col_1->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_1->add(['Header',$fold['name'],'centered']);
-              $i++;
-              break;
-        case 2:
-              $col_2->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_2->add(['Header',$fold['name'],'centered']);
-              $i++;
-              break;
-        case 3:
-              $col_3->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_3->add(['Header',$fold['name'],'centered']);
-              $i++;
-              break;
-        case 4:
-              $col_4->add(['Image',$folder_icon,'big'])->on('click', new \atk4\ui\jsExpression($link));
-              $col_4->add(['Header',$fold['name'],'centered']);
-              $i=1;
-              $col_1->add(['ui'=>'hidden divider']);
-              $col_2->add(['ui'=>'hidden divider']);
-              $col_3->add(['ui'=>'hidden divider']);
-              $col_4->add(['ui'=>'hidden divider']);
-              break;
-    }
-}
-
-
 if ($_SESSION['user_id'] == $folder['account_id']) {
 
 $app->add(['ui'=>'divider']);
 
 $delete_folder_button = $app->add(['Button','Delete folder','inverted red','icon'=>'trash'])->link(['delete_folder']);
-
 }
-
-
-/*$blob = $blobClient->getBlob($file['ContainerName'], $file['MetaName']);
-
-$files = ($blobClient->listBlobs($file['ContainerName']));
-//$image = $files["0"]["_data:protected"]["url"];
-$image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
-
- if ($file['MetaIsImage']) {
-   $app->add(['Image',$image]);
-   $app->add(['ui'=>'hidden divider']);
- }
-
-$DownloadFile = $app->add(['Button','Download '.$file['MetaName'],'icon'=>'cloud download','inverted green'])
-    ->link($image);
-
-$app->add(['ui'=>'hidden divider']);
-
-$DeleteButton = $app->add(['Button','Delete ','red right ribbon','iconRight'=>'trash']);
-
-$_SESSION['blobClient'] = $blobClient;
-$_SESSION['containerName'] = $file['ContainerName'];
-
-$DeleteButton->link(['delete']);*/

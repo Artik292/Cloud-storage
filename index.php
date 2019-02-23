@@ -39,7 +39,7 @@ $folder = new Folder($db);
 $i = 1;
 
 foreach ($folder as $fold) {
-    //$folder_icon = $fold['Image'] ?? 'no_image.png';
+    //$folder_icon = $fold['Image'] ?? 'src/no_image.png';
     //if (isset($fold['Image'])) {
 
     if (!($fold['Is_SubFolder'])) {
@@ -47,7 +47,7 @@ foreach ($folder as $fold) {
         if (!($fold['Image'] == NULL)) {
           $folder_icon = $fold['Image'];
         } else {
-          $folder_icon = 'no_image.png';
+          $folder_icon = 'src/folder.png';
         }
 
         $id = $fold->id;
