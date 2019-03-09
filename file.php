@@ -5,6 +5,14 @@ require 'connection.php';
 $app = new \atk4\ui\App('Main Page');
 $app->initLayout('Centered');
 
+/*if (isset($_SESSION['BreadCrumb'])) {
+  if ((end($_SESSION['BreadCrumb'])) !== $_SESSION['folder_id']) {  //BECAUSE OF JS VIRTUAL PAGE (IT RESTART ALL PAGE)
+   array_push($_SESSION['BreadCrumb'],$_SESSION['folder_id']);
+ }
+} */
+
+//var_dump($_SESSION['BreadCrumb']);
+
 $columns = $app->add('Columns');
 $col_1 = $columns->addColumn(8);
 $col_2 = $columns->addColumn(8);
@@ -13,7 +21,7 @@ $folder = new Folder($db);
 $folder->load($_SESSION['folder_id']);
 $folder_has_file = $folder->ref('File');
 
-$col_1->add(['Button','Back','inverted blue','icon'=>'arrow alternate circle left'])->link(['index']);
+$col_1->add(['Button','Back','inverted blue','icon'=>'arrow alternate circle left'])->link(['back']);
 $col_1->add(['ui'=>'hidden divider']);
 
 
@@ -28,7 +36,7 @@ $add_file_button = $col_2->add(['Button','Add file','inverted green','icon'=>'pl
 $model = new File($db);
 require 'virtual_page/add_button.php';
 
-$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from AddButton.php
+$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from virtual_page/add_button.php
 
 // FOLDER //
   $model = new Folder($db);
@@ -37,7 +45,7 @@ $add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is
 
   $add_folder_button = $col_2->add(['Button','Add folder','inverted yellow','icon'=>'folder']);
 
-  $add_folder_button->on('click', new \atk4\ui\jsModal('New Folder',$vir)); //$vir is from AddFolder.php
+  $add_folder_button->on('click', new \atk4\ui\jsModal('New Folder',$vir)); //$vir is from virtual_page/add_sub_folder.php
 }
 
 /**
@@ -55,10 +63,6 @@ require 'virtual_page/file_show.php';
 **/
 
 $sub_folder = $folder->ref('SubFolder');
-
-//echo !($sub_folder == NULL);
-//echo $_SESSION['folder_id'];
-//var_dump($sub_folder);
 
 foreach ($sub_folder as $sub_fold) {
   $app->add(['Header','Folders']);
