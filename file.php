@@ -174,6 +174,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_1->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
               break;
         case 2:
@@ -181,6 +182,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_2->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
               break;
         case 3:
@@ -188,6 +190,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_3->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
               break;
         case 4:
@@ -195,6 +198,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_4->add(['Header',$file['MetaName'],'center aligned']);
               $i=1;
               $col_1->add(['ui'=>'hidden divider']);
               $col_2->add(['ui'=>'hidden divider']);
