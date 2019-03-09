@@ -1,6 +1,6 @@
 <?php
 
-$vir->set(function($vir) use($db,$blobClient,$folder){
+$vir->set(function($vir) use($db,$blobClient,$folder,$app){
 
     $file = new File($db);
     $file->load($_SESSION['file_id']);
@@ -27,11 +27,8 @@ $vir->set(function($vir) use($db,$blobClient,$folder){
             } else {
                 $delete_name = 'Delete file';
             }
-            $vir->add(['Button',$delete_name,'red','icon'=>'trash alternate'])->on('click', function() use($blobClient,$file) {
-              $_SESSION['file_id'] = $file->id;
-              //require 'delete_file.php';
-              return new \atk4\ui\jsExpression('document.location = "delete_file.php" ');
-            });
+            require 'virtual_page/check_delete_file.php';
+            $vir->add(['Button',$delete_name,'red','icon'=>'trash alternate'])->on('click', new \atk4\ui\jsModal('Are you sure?',$new_vir));
     }
 
     return 1;

@@ -212,5 +212,8 @@ if ($_SESSION['user_id'] == $folder['account_id']) {
 
 $app->add(['ui'=>'divider']);
 
-$delete_folder_button = $app->add(['Button','Delete folder','inverted red','icon'=>'trash'])->link(['delete_folder']);
+require 'virtual_page/check_delete_folder.php';
+
+$delete_folder_button = $app->add(['Button','Delete folder','inverted red','icon'=>'trash']);
+$delete_folder_button->on('click', new \atk4\ui\jsModal('Are you sure?',$vir));
 }
