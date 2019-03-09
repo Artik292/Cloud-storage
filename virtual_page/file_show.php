@@ -6,13 +6,15 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app){
     $file->load($_SESSION['file_id']);
     if ($file['MetaIsImage']) {
         $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
-        $vir->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
-          $folder = new Folder($db);
-          $folder->load($_SESSION['folder_id']);
-          $folder['Image'] = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
-          $folder->save();
-          return new atk4\ui\jsNotify(['content' => 'Ready', 'color' => 'blue']);
-        });
+              if ($_SESSION['user_id'] == $folder['account_id']) {
+                $vir->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
+                  $folder = new Folder($db);
+                  $folder->load($_SESSION['folder_id']);
+                  $folder['Image'] = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+                  $folder->save();
+                  return new \atk4\ui\jsToast(['title'   => 'Success','message' => 'Successfully completed!','class'   => 'success',]);
+                });
+        }
     } else {
         $file_image = 'src/no_image.png';
     }
