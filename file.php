@@ -34,9 +34,9 @@ $col_1->add(['ui'=>'hidden divider']);
 if ($_SESSION['user_id'] == $folder['account_id']) {
 $add_file_button = $col_2->add(['Button','Add file','inverted green','icon'=>'plus']);
 $model = new File($db);
-require 'virtual_page/add_button.php';
+require 'virtual_page/add_file.php';
 
-$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from virtual_page/add_button.php
+$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from virtual_page/add_file.php
 
 // FOLDER //
   $model = new Folder($db);

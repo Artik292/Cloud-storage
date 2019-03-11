@@ -51,6 +51,7 @@ function init() {
   $this->addField('ContainerName',['caption'=>'Container name']);
   $this->addField('MetaName',['caption'=>'Meta file name']);
   $this->addField('MetaType',['caption'=>'Meta file type']);
+  $this->addField('DateCreated',['type'=>'datetime']);
   $this->addField('MetaSize',['caption'=>'Meta file size']);
   $this->addField('MetaIsImage',['type'=>'boolean','caption'=>'Meta file is image']);
   $this->hasOne('folder_id', new Folder())->addTitle();
