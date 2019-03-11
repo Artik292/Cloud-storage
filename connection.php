@@ -15,7 +15,8 @@ if ($answ_2) {
   header('Location: login.php');
 }
 
-date_default_timezone_set('UTC');
+date_default_timezone_set('Europe/Riga');
+//date_default_timezone_set('UTC');
 
 require 'vendor/autoload.php';
 require 'random_string.php';
