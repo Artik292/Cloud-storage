@@ -105,6 +105,8 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
       $file['MetaName'] = $_SESSION['name_file'];
       //$file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
       $file['MetaType'] = substr($_SESSION['name_file'], strpos($_SESSION['name_file'], ".") + 1);
+      date_default_timezone_set('Europe/Riga');
+      $date = new DateTime(date_default_timezone_get()); 
       $file['DateCreated'] = $date->format('Y-m-d H:i:s');
       $file['MetaSize'] = $_SESSION['size_file'];
       if (in_array($file['MetaType'],$image_types)) {
