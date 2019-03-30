@@ -2,6 +2,8 @@
 
 require 'connection.php';
 
+unset($_SESSION['BreadCrumb']);
+
 $app = new \atk4\ui\App('My Filestore Demo alfa(0.0.3)');
 $app->initLayout('Centered');
 
@@ -12,20 +14,15 @@ $app->initLayout('Centered');
 **/
 
 $button_add_folder = $app->add(['Button','New folder','big inverted green','icon'=>'plus']);
-$vir = $app->add('VirtualPage');
-$vir->set(function($vir) use ($db) {
-            $form = $vir->add('Form');
-            $form->setModel(new Folder($db),['name']);
-            $form->onSubmit(function($form) {
-                $form->model['account_id'] = $_SESSION['user_id'];
-                $form->model['Is_SubFolder'] = 0;
-                $form->model->save();
-                return [$form->success('Folder added!'),new \atk4\ui\jsExpression('document.location="index.php"')];
-    });
-});
-
+require 'virtual_page/add_main_folder.php';
 $button_add_folder->on('click', new \atk4\ui\jsModal('New Folder',$vir));
 $app->add(['ui'=>'green divider']);
+
+/**
+
+    Add Folders
+
+**/
 
 $columns = $app->add('Columns');
 
