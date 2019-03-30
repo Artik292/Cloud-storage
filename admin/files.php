@@ -8,7 +8,7 @@ $app->initLayout('Admin');
 require 'layout.php';
 
 $file = new File($db);
-$file->setOrder('DateCreated');
+$file->setOrder('DateCreated',true);
 
 $CRUD = $app->add(['CRUD']);
 $CRUD->setModel($file);
