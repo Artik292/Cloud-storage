@@ -4,10 +4,11 @@
   * Make 3 more ref navigations in admin_connection.
   * Make counter for folder (count files inside).
   * FIX **CRUD**.
-  * Add **bread crumbs**.
+  ~~* Add **bread crumbs**.~~
 
 # What is already done
 
+  *  **bread crumbs**.
   * Folders inside folders.
   * Icons for folders.
   * Only owner of folder can delete files.
