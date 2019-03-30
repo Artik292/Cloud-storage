@@ -38,7 +38,7 @@ $form->onSubmit(function($form) use($account,$app){
     } else {
         $account->tryLoadby('name',$form->model['nick']);
         if (isset($account->id)) {
-          if ($account['password'] == $form->model['password']) {
+          if ($account['Password'] == $form->model['password']) {
               $_SESSION['user_id'] = $account->id;
               $account->unload();
               return $app->jsRedirect('index.php');
