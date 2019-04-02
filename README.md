@@ -5,7 +5,7 @@
     * Make counter for folder (count files inside).
     * FIX **CRUD**.
     ~~* Add **bread crumbs**.~~
-    * Admin can delete any folders and files.
+    * Admin can delete any fi
 
 # What is already done
 

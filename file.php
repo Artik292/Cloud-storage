@@ -5,6 +5,14 @@ require 'connection.php';
 $app = new \atk4\ui\App('Main Page');
 $app->initLayout('Centered');
 
+/*if (isset($_SESSION['BreadCrumb'])) {
+  if ((end($_SESSION['BreadCrumb'])) !== $_SESSION['folder_id']) {  //BECAUSE OF JS VIRTUAL PAGE (IT RESTART ALL PAGE)
+   array_push($_SESSION['BreadCrumb'],$_SESSION['folder_id']);
+ }
+} */
+
+//var_dump($_SESSION['BreadCrumb']);
+
 $columns = $app->add('Columns');
 $col_1 = $columns->addColumn(8);
 $col_2 = $columns->addColumn(8);
@@ -13,7 +21,7 @@ $folder = new Folder($db);
 $folder->load($_SESSION['folder_id']);
 $folder_has_file = $folder->ref('File');
 
-$col_1->add(['Button','Back','inverted blue','icon'=>'arrow alternate circle left'])->link(['index']);
+$col_1->add(['Button','Back','inverted blue','icon'=>'arrow alternate circle left'])->link(['back']);
 $col_1->add(['ui'=>'hidden divider']);
 
 
@@ -26,9 +34,9 @@ $col_1->add(['ui'=>'hidden divider']);
 if ($_SESSION['user_id'] == $folder['account_id']) {
 $add_file_button = $col_2->add(['Button','Add file','inverted green','icon'=>'plus']);
 $model = new File($db);
-require 'virtual_page/add_button.php';
+require 'virtual_page/add_file.php';
 
-$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from AddButton.php
+$add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is from virtual_page/add_file.php
 
 // FOLDER //
   $model = new Folder($db);
@@ -37,7 +45,7 @@ $add_file_button->on('click', new \atk4\ui\jsModal('New File',$vir));  //$vir is
 
   $add_folder_button = $col_2->add(['Button','Add folder','inverted yellow','icon'=>'folder']);
 
-  $add_folder_button->on('click', new \atk4\ui\jsModal('New Folder',$vir)); //$vir is from AddFolder.php
+  $add_folder_button->on('click', new \atk4\ui\jsModal('New Folder',$vir)); //$vir is from virtual_page/add_sub_folder.php
 }
 
 /**
@@ -55,10 +63,6 @@ require 'virtual_page/file_show.php';
 **/
 
 $sub_folder = $folder->ref('SubFolder');
-
-//echo !($sub_folder == NULL);
-//echo $_SESSION['folder_id'];
-//var_dump($sub_folder);
 
 foreach ($sub_folder as $sub_fold) {
   $app->add(['Header','Folders']);
@@ -174,6 +178,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_1->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
               break;
         case 2:
@@ -181,6 +186,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_2->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
               break;
         case 3:
@@ -188,6 +194,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_3->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
               break;
         case 4:
@@ -195,6 +202,7 @@ foreach ($files as $file) {
               $_SESSION['file_id'] = $file->id;
               return new \atk4\ui\jsModal('Image',$vir);
               });
+              $col_4->add(['Header',$file['MetaName'],'center aligned']);
               $i=1;
               $col_1->add(['ui'=>'hidden divider']);
               $col_2->add(['ui'=>'hidden divider']);
@@ -208,5 +216,8 @@ if ($_SESSION['user_id'] == $folder['account_id']) {
 
 $app->add(['ui'=>'divider']);
 
-$delete_folder_button = $app->add(['Button','Delete folder','inverted red','icon'=>'trash'])->link(['delete_folder']);
+require 'virtual_page/check_delete_folder.php';
+
+$delete_folder_button = $app->add(['Button','Delete folder','inverted red','icon'=>'trash']);
+$delete_folder_button->on('click', new \atk4\ui\jsModal('Are you sure?',$vir));
 }

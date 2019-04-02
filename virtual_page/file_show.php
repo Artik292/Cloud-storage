@@ -1,18 +1,20 @@
 <?php
 
-$vir->set(function($vir) use($db,$blobClient,$folder){
+$vir->set(function($vir) use($db,$blobClient,$folder,$app){
 
     $file = new File($db);
     $file->load($_SESSION['file_id']);
     if ($file['MetaIsImage']) {
         $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
-        $vir->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
-          $folder = new Folder($db);
-          $folder->load($_SESSION['folder_id']);
-          $folder['Image'] = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
-          $folder->save();
-          return new atk4\ui\jsNotify(['content' => 'Ready', 'color' => 'blue']);
-        });
+              if ($_SESSION['user_id'] == $folder['account_id']) {
+                $vir->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
+                  $folder = new Folder($db);
+                  $folder->load($_SESSION['folder_id']);
+                  $folder['Image'] = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+                  $folder->save();
+                  return new \atk4\ui\jsToast(['title'   => 'Success','message' => 'Successfully completed!','class'   => 'success',]);
+                });
+        }
     } else {
         $file_image = 'src/no_image.png';
     }
@@ -27,11 +29,8 @@ $vir->set(function($vir) use($db,$blobClient,$folder){
             } else {
                 $delete_name = 'Delete file';
             }
-            $vir->add(['Button',$delete_name,'red','icon'=>'trash alternate'])->on('click', function() use($blobClient,$file) {
-              $_SESSION['file_id'] = $file->id;
-              //require 'delete_file.php';
-              return new \atk4\ui\jsExpression('document.location = "delete_file.php" ');
-            });
+            require 'virtual_page/check_delete_file.php';
+            $vir->add(['Button',$delete_name,'red','icon'=>'trash alternate'])->on('click', new \atk4\ui\jsModal('Are you sure?',$new_vir));
     }
 
     return 1;

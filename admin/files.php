@@ -7,6 +7,9 @@ $app->initLayout('Admin');
 
 require 'layout.php';
 
+$file = new File($db);
+$file->setOrder('DateCreated',true);
+
 $CRUD = $app->add(['CRUD']);
-$CRUD->setModel(new File($db));
+$CRUD->setModel($file);
 $CRUD->addQuickSearch(['name']);
