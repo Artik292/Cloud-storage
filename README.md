@@ -4,6 +4,7 @@
   * Make 3 more ref navigations in admin_connection.
   * Make counter for folder (count files inside).
   * FIX **CRUD**.
+  * Admin with full access.
   * ~~Add **bread crumbs**.~~
 
 # What is already done
