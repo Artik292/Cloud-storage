@@ -23,7 +23,7 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app){
     $vir->add(['ui'=>'divider']);
     $vir->add(['Button','Download','big green','iconRight'=>'download'])->link("https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName']);
 
-    if ($_SESSION['user_id'] == $folder['account_id']) {
+    if (($_SESSION['user_id'] == $folder['account_id']) OR ($is_admin)) {
             if ($file['MetaIsImage']) {
                 $delete_name = 'Delete image';
             } else {
