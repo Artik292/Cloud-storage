@@ -6,6 +6,7 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app,$is_admin){
     $file->load($_SESSION['file_id']);
     if ($file['MetaIsImage']) {
         $file_image = $file['Link'];
+              if (($_SESSION['user_id'] == $folder['account_id']) OR ($is_admin)) {
                 $col_0->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
                   $folder = new Folder($db);
                   $folder->load($_SESSION['folder_id']);
