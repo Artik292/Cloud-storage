@@ -167,7 +167,7 @@ $i = 1;
 
 foreach ($files as $file) {
     if ($file['MetaIsImage']) {
-      $file_image = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+      $file_image = $file['Link'];
     } else {
       $file_image = 'src/no_image.png';
     }

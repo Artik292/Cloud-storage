@@ -114,6 +114,7 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
       } else {
           $file['MetaIsImage'] = FALSE;
       }
+      $file['Link'] = "https://artik292.blob.core.windows.net/".$_SESSION["containerName"]."/".$_SESSION['name_file'];
       $file['folder_id'] = $_SESSION['folder_id'];
       $file->save();
       $user_id = $_SESSION['user_id'];
