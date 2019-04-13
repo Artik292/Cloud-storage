@@ -75,6 +75,7 @@ function init() {
   $this->addField('Email',['caption'=>'E-mail']);
   $this->addField('name',['caption'=>'Nick name']);
   $this->addField('Password',['caption'=>'Password']);
+  $this->addField('admin_access',['caption'=>'Is Admin','type'=>'boolean','default'=>FALSE]);
   $this->hasMany('Folder', new Folder);
 }
 }

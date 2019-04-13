@@ -81,6 +81,7 @@ function init() {
   $this->addField('Email',['caption'=>'E-mail']);
   $this->addField('name',['caption'=>'Nick name']);
   $this->addField('Password',['caption'=>'Password','type'=>'password']);
+  $this->addField('admin_access',['caption'=>'Is Admin','type'=>'boolean','default'=>FALSE]);
   $this->hasMany('Folder');
 }
 }
@@ -93,6 +94,21 @@ function init() {
   $this->hasOne('folder_id',new Folder()) ;
 }
 }
+
+/**
+  CHECK, IF ACCOUNT HAVE ADMIN ACCESS
+**/
+
+if (isset($_SESSION['user_id'])) {
+  $user = new Account($db);
+  $user->load($_SESSION['user_id']);
+  $is_admin = $user['admin_access'];
+  $user->unload();
+ }
+
+/**
+  LIST OF PHOTOS TYPES
+**/
 
 $image_types = array(
   'jpg',

@@ -31,7 +31,7 @@ $col_1->add(['ui'=>'hidden divider']);
 
 **/
 // FILE //
-if ($_SESSION['user_id'] == $folder['account_id']) {
+if (($_SESSION['user_id'] == $folder['account_id']) OR ($is_admin)) {
 $add_file_button = $col_2->add(['Button','Add file','inverted green','icon'=>'plus']);
 $model = new File($db);
 require 'virtual_page/add_file.php';
@@ -212,7 +212,7 @@ foreach ($files as $file) {
 }
 }
 
-if ($_SESSION['user_id'] == $folder['account_id']) {
+if (($_SESSION['user_id'] == $folder['account_id']) OR ($is_admin)) {
 
 $app->add(['ui'=>'divider']);
 
