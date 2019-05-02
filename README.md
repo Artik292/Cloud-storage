@@ -13,3 +13,4 @@
   * Icons for folders.
   * Only owner of folder can delete files.
   * Separation between folders and files inside folders.
+  * Renaming for files and folders.
