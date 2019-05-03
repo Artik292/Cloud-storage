@@ -17,7 +17,12 @@ $file->load($_SESSION['file_id']);
         $error_message = $e->getMessage();
         new atk4\ui\jsNotify(['content' => $code.": ".$error_message, 'color' => 'red']);
     }
-
+  $folder = new Folder($db);
+  $folder->load($file['folder_id']);
+  if ($folder['Image'] == $file['Link']) {
+    $folder['Image'] = 'src/folder.png';
+    $folder->save();
+  }
   $file->delete();
 
 unset($_SESSION['file_id']);
