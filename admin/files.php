@@ -7,9 +7,22 @@ $app->initLayout('Admin');
 
 require 'layout.php';
 
-$file = new File($db);
-$file->setOrder('DateCreated',true);
+if (isset($_SESSION['folder_id'])) {
+  $folder = new Folder($db);
+  $folder->load($_SESSION['folder_id']);
+  $file = $folder->ref('File');
+  $file->setOrder('DateCreated',true);
+  $CRUD = $app->add(['CRUD']);
+  $CRUD->setModel($file);
+  $CRUD->addQuickSearch(['name']);
 
-$CRUD = $app->add(['CRUD']);
-$CRUD->setModel($file);
-$CRUD->addQuickSearch(['name']);
+  unset($_SESSION['folder_id']);
+} else {
+
+  $file = new File($db);
+  $file->setOrder('DateCreated',true);
+
+  $CRUD = $app->add(['CRUD']);
+  $CRUD->setModel($file);
+  $CRUD->addQuickSearch(['name']);
+}
