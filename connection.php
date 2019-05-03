@@ -46,6 +46,8 @@ if (isset($_ENV['CLEARDB_DATABASE_URL'])) {
 
 class File extends \atk4\data\Model {
 	public $table = 'file';
+  public $title = 'ContainerName';
+  public $name = 'ContainerName';
 function init() {
 	parent::init();
   $this->addField('ContainerName',['caption'=>'Container name']);

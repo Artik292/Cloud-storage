@@ -14,7 +14,7 @@ if (isset($_SESSION['folder_id'])) {
   $file->setOrder('DateCreated',true);
   $CRUD = $app->add(['CRUD']);
   $CRUD->setModel($file);
-  $CRUD->addQuickSearch(['name']);
+  $CRUD->addQuickSearch(['MetaName','MetaType','ContainerName']);
 
   unset($_SESSION['folder_id']);
 } else {
@@ -24,5 +24,5 @@ if (isset($_SESSION['folder_id'])) {
 
   $CRUD = $app->add(['CRUD']);
   $CRUD->setModel($file);
-  $CRUD->addQuickSearch(['name']);
+  $CRUD->addQuickSearch(['MetaName','MetaType','ContainerName']);
 }

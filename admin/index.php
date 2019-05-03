@@ -9,5 +9,5 @@ require 'layout.php';
 
 $CRUD = $app->add(['CRUD']);
 $CRUD->setModel(new Account($db));
-$CRUD->addQuickSearch(['name']);
+$CRUD->addQuickSearch(['name','Email']);
 $CRUD->addDecorator('name', new \atk4\ui\TableColumn\Link('re.php?id={$id}&way=usrtofol'));
