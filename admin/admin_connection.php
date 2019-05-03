@@ -49,6 +49,7 @@ function init() {
   $this->addField('MetaSize',['caption'=>'Meta file size']);
   $this->addField('MetaIsImage',['type'=>'boolean','caption'=>'Meta file is image']);
   $this->addField('Link');
+  $this->addField('Icon');
   $this->hasOne('folder_id', new Folder())->addTitle();
 }
 }
