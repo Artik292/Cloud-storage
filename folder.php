@@ -151,14 +151,14 @@ ON SAVE
 
 **/
 
-$form->onSubmit(function ($form) use($db,$image_types) {
+$form->onSubmit(function ($form) use($db,$file_types) {
 
     $file = new File($db);
     $file['ContainerName'] = $_SESSION["containerName"];
     $file['MetaName'] = $_SESSION['name_file'];
     $file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
     $file['MetaSize'] = $_SESSION['size_file'];
-    if (in_array($file['MetaType'],$image_types)) {
+    if (in_array($file['MetaType'],$file_types)) {
         $file['MetaIsImage'] = TRUE;
     } else {
         $file['MetaIsImage'] = FALSE;

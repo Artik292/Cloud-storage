@@ -46,6 +46,8 @@ if (isset($_ENV['CLEARDB_DATABASE_URL'])) {
 
 class File extends \atk4\data\Model {
 	public $table = 'file';
+  public $title = 'ContainerName';
+  public $name = 'ContainerName';
 function init() {
 	parent::init();
   $this->addField('ContainerName',['caption'=>'Container name']);
@@ -55,6 +57,7 @@ function init() {
   $this->addField('MetaSize',['caption'=>'Meta file size']);
   $this->addField('MetaIsImage',['type'=>'boolean','caption'=>'Meta file is image']);
   $this->addField('Link');
+  $this->addField('Icon');
   $this->hasOne('folder_id', new Folder())->addTitle();
 }
 }
@@ -109,12 +112,23 @@ if (isset($_SESSION['user_id'])) {
 
 /**
   LIST OF PHOTOS TYPES
+
+  EASY TO ADD:
+  "[type]"=>"src/[type].png"
 **/
 
-$image_types = array(
-  'jpg',
-  'jpeg',
-  'png',
-  'gif',
-  'bmp'
+$file_types = array(
+  // IMAGE //
+  "jpg"=>"img",
+  "jpeg"=>"img",
+  "png"=>"img",
+  "gif"=>"img",
+  "bmp"=>"img",
+  "svg"=>"img",
+
+  //Video
+
+  //Microsoft office
+  "pptx"=>"src/pptx.png",
+  "xlsx"=>"src/xlsx.png"
 );

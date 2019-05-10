@@ -6,23 +6,18 @@ $id = $_GET['id'];
 $way = $_GET['way'];
 
 switch ($way) {
-  case 'folders':
-      $_SESSION['folders'] = $id;
+  case 'usrtofol':
+      $_SESSION['account_id'] = $id;
       header('Location: folders.php');
   break;
 
-  case 'folder':
-      $_SESSION['folder'] = $id;
-      header('Location: folders.php');
+  case 'foltousr':
+      $_SESSION['account_id'] = $id;
+      header('Location: index.php');
   break;
 
-  case 'files':
-      $_SESSION['files'] = $id;
-      header('Location: files.php');
-  break;
-
-  case 'file':
-      $_SESSION['file'] = $id;
+  case 'foltofil':
+      $_SESSION['folder_id'] = $id;
       header('Location: files.php');
   break;
 

@@ -166,17 +166,13 @@ $i = 1;
 **/
 
 foreach ($files as $file) {
-    if ($file['MetaIsImage']) {
-      $file_image = $file['Link'];
-    } else {
-      $file_image = 'src/no_image.png';
-    }
+      $file_image = $file['Icon'];
 
     switch ($i) {
         case 1:
               $im = $col_1->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
               $_SESSION['file_id'] = $file->id;
-              return new \atk4\ui\jsModal('Image',$vir);
+              return new \atk4\ui\jsModal(NULL,$vir);
               });
               $col_1->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
@@ -184,7 +180,7 @@ foreach ($files as $file) {
         case 2:
               $im = $col_2->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
               $_SESSION['file_id'] = $file->id;
-              return new \atk4\ui\jsModal('Image',$vir);
+              return new \atk4\ui\jsModal(NULL,$vir);
               });
               $col_2->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
@@ -192,7 +188,7 @@ foreach ($files as $file) {
         case 3:
               $col_3->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
               $_SESSION['file_id'] = $file->id;
-              return new \atk4\ui\jsModal('Image',$vir);
+              return new \atk4\ui\jsModal(NULL,$vir);
               });
               $col_3->add(['Header',$file['MetaName'],'center aligned']);
               $i++;
@@ -200,7 +196,7 @@ foreach ($files as $file) {
         case 4:
               $col_4->add(['Image',$file_image,'big'])->on('click', function () use ($file,$vir) {
               $_SESSION['file_id'] = $file->id;
-              return new \atk4\ui\jsModal('Image',$vir);
+              return new \atk4\ui\jsModal(NULL,$vir);
               });
               $col_4->add(['Header',$file['MetaName'],'center aligned']);
               $i=1;

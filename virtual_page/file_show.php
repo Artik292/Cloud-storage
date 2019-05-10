@@ -10,7 +10,7 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app,$is_admin){
     $col_1 = $columns->addColumn(1);    // VISUAL FIX
 
     if ($file['MetaIsImage']) {
-        $file_image = $file['Link'];
+        $file_image = $file['Icon'];
               if (($_SESSION['user_id'] == $folder['account_id']) OR ($is_admin)) {
                 $col_0->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
                   $folder = new Folder($db);
@@ -21,7 +21,7 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app,$is_admin){
                 });
         }
     } else {
-        $file_image = 'src/no_image.png';
+        $file_image = $file['Icon'];
     }
 
     /**
@@ -54,6 +54,7 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app,$is_admin){
     **/
 
     $col_0->add(['Button','Download','big green','iconRight'=>'download'])->link($file['Link']);
+
     if (($_SESSION['user_id'] == $folder['account_id']) OR ($is_admin)) {
             if ($file['MetaIsImage']) {
                 $delete_name = 'Delete image';

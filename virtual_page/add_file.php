@@ -7,7 +7,7 @@ use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
 
 $vir = $app->add('VirtualPage');
-$vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
+$vir->set(function($vir) use ($model,$blobClient,$app,$db,$file_types) {
 
   $form = $vir->add('Form');
   $field = $form->addField('file', ['MyUpload']);
@@ -98,7 +98,7 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
     ON SUBMIT
   **/
 
-  $form->onSubmit(function ($form) use($db,$image_types) {
+  $form->onSubmit(function ($form) use($db,$file_types) {
 
       $file = new File($db);
       $file['ContainerName'] = $_SESSION["containerName"];
@@ -106,15 +106,27 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$image_types) {
       //$file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
       $file['MetaType'] = substr($_SESSION['name_file'], strpos($_SESSION['name_file'], ".") + 1);
       date_default_timezone_set('Europe/Riga');
-      $date = new DateTime(date_default_timezone_get()); 
+      $date = new DateTime(date_default_timezone_get());
       $file['DateCreated'] = $date->format('Y-m-d H:i:s');
       $file['MetaSize'] = $_SESSION['size_file'];
-      if (in_array($file['MetaType'],$image_types)) {
+      $file['Link'] = "https://artik292.blob.core.windows.net/".$_SESSION["containerName"]."/".$_SESSION['name_file'];
+      /*if (in_array($file['MetaType'],$file_types)) {
           $file['MetaIsImage'] = TRUE;
       } else {
           $file['MetaIsImage'] = FALSE;
+      }*/
+      if (isset($file_types[$file['MetaType']])) {
+          if ($file_types[$file['MetaType']] == "img") {
+            $file['MetaIsImage'] = TRUE;
+            $file['Icon'] = $file['Link'];
+          } else {
+            $file['MetaIsImage'] = FALSE;
+            $file['Icon'] = $file_types[$file['MetaType']];
+          }
+      } else {
+          $file['MetaIsImage'] = FALSE;
+          $file['Icon'] = "src/no_image.png";
       }
-      $file['Link'] = "https://artik292.blob.core.windows.net/".$_SESSION["containerName"]."/".$_SESSION['name_file'];
       $file['folder_id'] = $_SESSION['folder_id'];
       $file->save();
       $user_id = $_SESSION['user_id'];
