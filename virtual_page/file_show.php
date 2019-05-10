@@ -15,7 +15,7 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app,$is_admin){
                 $col_0->add(['Button','Set as folder image','blue','icon'=>'plus'])->on('click', function() use($file,$db) {
                   $folder = new Folder($db);
                   $folder->load($_SESSION['folder_id']);
-                  $folder['Image'] = "https://artik292.blob.core.windows.net/".$file['ContainerName']."/".$file['MetaName'];
+                  $folder['Image'] = $file['Link'];
                   $folder->save();
                   return new \atk4\ui\jsToast(['title'   => 'Success','message' => 'Successfully completed!','class'   => 'success',]);
                 });
@@ -54,7 +54,6 @@ $vir->set(function($vir) use($db,$blobClient,$folder,$app,$is_admin){
     **/
 
     $col_0->add(['Button','Download','big green','iconRight'=>'download'])->link($file['Link']);
-    
     if (($_SESSION['user_id'] == $folder['account_id']) OR ($is_admin)) {
             if ($file['MetaIsImage']) {
                 $delete_name = 'Delete image';
