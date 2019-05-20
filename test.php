@@ -3,7 +3,22 @@
 //require 'vendor/autoload.php';
 require 'connection.php';
 
-$files = new File($db);
+
+
+$file_name = "Снимок экрана 2019-05-10 в 15.12.45.png";
+$last_dot_position_number = strrpos($_SESSION['name_file'], ".");
+$last_dot_position_number++;
+$type = substr($file_name, $last_dot_position_number);
+
+
+//var_dump($last_dot_position_number);
+echo $type;
+
+
+
+
+
+/*$files = new File($db);
 foreach ($files as $file) {
     if($file['Icon'] == NULL){
       if (isset($file_types[$file['MetaType']])) {
@@ -18,6 +33,8 @@ foreach ($files as $file) {
     }
     $file->save();
 }
+*/
+
 
 /*$app = new \atk4\ui\App('Main Page');
 $app->initLayout('Centered');
