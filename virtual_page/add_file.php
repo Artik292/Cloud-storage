@@ -104,7 +104,13 @@ $vir->set(function($vir) use ($model,$blobClient,$app,$db,$file_types) {
       $file['ContainerName'] = $_SESSION["containerName"];
       $file['MetaName'] = $_SESSION['name_file'];
       //$file['MetaType'] = substr($_SESSION['type_file'],(strpos($_SESSION['type_file'],'/'))+1);
-      $file['MetaType'] = substr($_SESSION['name_file'], strpos($_SESSION['name_file'], ".") + 1);
+      //$file['MetaType'] = substr($_SESSION['name_file'], strpos($_SESSION['name_file'], ".",-1) + 1);
+
+      $file_name = $_SESSION['name_file'];
+      $last_dot_position_number = strrpos($_SESSION['name_file'], ".");  // FOR EASY UNDERSTANDING
+      $last_dot_position_number++;
+      $file['MetaType'] = substr($file_name, $last_dot_position_number);
+
       date_default_timezone_set('Europe/Riga');
       $date = new DateTime(date_default_timezone_get());
       $file['DateCreated'] = $date->format('Y-m-d H:i:s');
