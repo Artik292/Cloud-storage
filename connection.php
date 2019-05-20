@@ -125,6 +125,7 @@ $file_types = array(
   "gif"=>"img",
   "bmp"=>"img",
   "svg"=>"img",
+  "ico"=>"img",
 
   //Video
 
