@@ -7,6 +7,8 @@
   * Add art-gallery mode.
   * Add folders sharing.
   * Add hidden folders.
+  * Favorite folders.
+  * Space limit for 1 account. (~ 2GB)
 
 
 # What is already done
@@ -16,5 +18,5 @@
   * Icons for folders.
   * Only owner of folder can delete files.
   * Separation between folders and files inside folders.
-  * Renaming for files and folders.
+  * Renaming for files.
   * Easy admin navigation.
