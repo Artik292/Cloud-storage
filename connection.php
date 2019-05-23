@@ -86,6 +86,8 @@ function init() {
   $this->addField('name',['caption'=>'Nick name']);
   $this->addField('Password',['caption'=>'Password','type'=>'password']);
   $this->addField('admin_access',['caption'=>'Is Admin','type'=>'boolean','default'=>FALSE]);
+  $this->addField('number_of_folders',['default'=>0]);
+  $this->addField('total_memory',['default'=>0]);
   $this->hasMany('Folder');
 }
 }
@@ -96,6 +98,16 @@ function init() {
 	parent::init();
   $this->addField('child_folder_id');
   $this->hasOne('folder_id',new Folder()) ;
+}
+}
+
+class Basic_info extends \atk4\data\Model {
+	public $table = 'basic_info';
+function init() {
+	parent::init();
+  $this->addField('amount_of_users');
+  $this->addField('total_memory_in_use');
+  $this->addField('amount_of_visitors');
 }
 }
 
