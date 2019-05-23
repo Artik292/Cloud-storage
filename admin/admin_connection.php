@@ -19,7 +19,7 @@ $answ_1 = ($page_not_login_php && $page_not_auth_php);
 $answ_2 = ($session_is_not_set && $answ_1);
 
 if ($answ_2) {
-  header('Location: login.php');
+  header('Location: ../login.php');
 }
 
 date_default_timezone_set('UTC');
@@ -83,6 +83,8 @@ function init() {
   $this->addField('name',['caption'=>'Nick name']);
   $this->addField('Password',['caption'=>'Password']);
   $this->addField('admin_access',['caption'=>'Is Admin','type'=>'boolean','default'=>FALSE]);
+  $this->addField('number_of_folders');
+  $this->addField('total_memory');
   $this->hasMany('Folder', new Folder);
 }
 }
@@ -93,5 +95,15 @@ function init() {
 	parent::init();
   $this->addField('child_folder_id');
   $this->hasOne('folder_id',new Folder()) ;
+}
+}
+
+class Basic_info extends \atk4\data\Model {
+	public $table = 'basic_info';
+function init() {
+	parent::init();
+  $this->addField('amount_of_users');
+  $this->addField('total_memory_in_use');
+  $this->addField('amount_of_visitors');
 }
 }
