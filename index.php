@@ -100,11 +100,12 @@ $vir->set(function($vir) use ($db) {
             $form->onSubmit(function($form) {
                 $password = $_ENV['admin_password'] ?? 'password';
                 if ($form->model['password'] == $password) {
-                    if (isset($_ENV['admin_password'])) {
-                        return new \atk4\ui\jsExpression('document.location="admin/"');
-                    } else {
+                    //if (isset($_ENV['admin_password'])) {
+                        //return new \atk4\ui\jsExpression('document.location="admin/"');
+                    //} else {
+                        $_SESSION['admin_access'] = TRUE;
                         return new \atk4\ui\jsExpression('document.location="admin/index.php"');
-                    }
+                    //}
                 } else {
                     /**
                     TIME BAN
