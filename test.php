@@ -5,14 +5,36 @@ require 'connection.php';
 
 
 
-$file_name = "Снимок экрана 2019-05-10 в 15.12.45.png";
+$accounts = new Account($db);
+$basic_info = new Basic_info($db);
+$basic_info->load(1);
+$basic_info['amount_of_users'] = 0;
+foreach ($accounts as $account) {
+    $basic_info['amount_of_users'] = $basic_info['amount_of_users'] + 1;
+}
+
+$files = new File($db);
+$basic_info['total_memory_in_use'] = 0;
+foreach ($files as $file) {
+    $basic_info['total_memory_in_use'] = $basic_info['total_memory_in_use'] + $file['MetaSize'];
+}
+$basic_info['total_memory_in_use'] = $basic_info['total_memory_in_use'];
+
+$basic_info->save();
+
+
+
+
+
+
+/*$file_name = "Снимок экрана 2019-05-10 в 15.12.45.png";
 $last_dot_position_number = strrpos($_SESSION['name_file'], ".");
 $last_dot_position_number++;
 $type = substr($file_name, $last_dot_position_number);
 
 
 //var_dump($last_dot_position_number);
-echo $type;
+echo $type; */
 
 
 
