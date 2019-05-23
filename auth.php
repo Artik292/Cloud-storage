@@ -23,7 +23,7 @@ $someone = new Account($db);
 
 $form->buttonSave->set('Register');
 
-$form->onSubmit(function($form) use($someone) {
+$form->onSubmit(function($form) use($someone,$db) {
     $someone->tryLoadby('Email',$form->model['email']);
     if (isset($someone->id)) {
         return new atk4\ui\jsNotify(['content' => 'This email is already in use', 'color' => 'red']);
@@ -40,6 +40,13 @@ $form->onSubmit(function($form) use($someone) {
             $someone->tryLoadby('Email',$form->model['email']);
             $_SESSION['user_id'] = $someone->id;
             $someone->unload();
+
+            $basic_info = new Basic_info($db);
+            $basic_info->load(1);
+            $basic_info['amount_of_visitors'] = $basic_info['amount_of_visitors']+1;
+            $basic_info->save();
+            $basic_info->unload();
+
             return new \atk4\ui\jsExpression('document.location = "index.php" ');
           } else {
             return new atk4\ui\jsNotify(['content' => 'Passwords are not the same', 'color' => 'red']);

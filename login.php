@@ -22,12 +22,19 @@ $account = new Account($db);
 
 $form->buttonSave->set('Log in');
 
-$form->onSubmit(function($form) use($account,$app){
+$form->onSubmit(function($form) use($account,$app,$db){
     $account->tryLoadby('Email',$form->model['nick']);
     if (isset($account->id)) {
         if ($account['Password'] == $form->model['password']) {
             $_SESSION['user_id'] = $account->id;
             $account->unload();
+
+            $basic_info = new Basic_info($db);
+            $basic_info->load(1);
+            $basic_info['amount_of_visitors'] = $basic_info['amount_of_visitors'] + 1;
+            $basic_info->save();
+            $basic_info->unload();
+
             return $app->jsRedirect('index.php');
         } else {
             $account->unload();
@@ -41,6 +48,13 @@ $form->onSubmit(function($form) use($account,$app){
           if ($account['Password'] == $form->model['password']) {
               $_SESSION['user_id'] = $account->id;
               $account->unload();
+
+              $basic_info = new Basic_info($db);
+              $basic_info->load(1);
+              $basic_info['amount_of_visitors']= $basic_info['amount_of_visitors'] + 1;
+              $basic_info->save();
+              $basic_info->unload();
+
               return $app->jsRedirect('index.php');
           } else {
               $account->unload();
