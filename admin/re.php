@@ -13,7 +13,7 @@ switch ($way) {
 
   case 'foltousr':
       $_SESSION['account_id'] = $id;
-      header('Location: index.php');
+      header('Location: users.php');
   break;
 
   case 'foltofil':
