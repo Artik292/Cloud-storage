@@ -96,6 +96,7 @@ function init() {
 
 $image_types = array(
   'jpg',
+  'JPG',
   'jpeg',
   'png',
   'gif',
